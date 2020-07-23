@@ -1,0 +1,6 @@
+{
+    "git.ignoreLimitWarning": true,
+    "python.pythonPath": ".aidapt/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
