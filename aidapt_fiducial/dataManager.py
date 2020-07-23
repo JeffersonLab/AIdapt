@@ -16,9 +16,14 @@ class DataManager:
     
     def get_numpy_array(self):
         if self.file.endswith('.npy'):
+            print('Data loaded')
+            print('Applying fiducial cuts')
             return np.load(self.file)
         elif self.file.endswith('.zzz') or self.file.endswith('.txt'):
-            return self._get_numpy_array_from_zzz()
+            print('Getting numpy array from .txt file data')
+            array = self._get_numpy_array_from_zzz() 
+            print('Applying fiducial cuts')
+            return array
 
 
     # Private Methods
@@ -53,12 +58,12 @@ class DataManager:
 
 
 
-test_file = '/media/tylerviducic/Elements/aidapt/data/recon/twopi_ppip.10.zzz'
-test_manager = DataManager(test_file)
+# test_file = '/media/tylerviducic/Elements/aidapt/data/recon/twopi_ppip.10.zzz'
+# test_manager = DataManager(test_file)
 
-start = time.time()
-my_array = test_manager.get_numpy_array()
-end = time.time()
-print(my_array)
-print('Array length: {}'.format(len(my_array)))
-print("time was " + str(end - start))
+# start = time.time()
+# my_array = test_manager.get_numpy_array()
+# end = time.time()
+
+# print('Array length: {}'.format(len(my_array)))
+# print("time was " + str(end - start))
