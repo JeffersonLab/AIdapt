@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # Read in data here 
 
-data_file = '/media/tylerviducic/Elements/aidapt/synthetic/clasfilter2_5M780.npy' # change to your path, obviously
+data_file = '/media/tylerviducic/Elements/aidapt/data/synthetic/clasfilter2_5M780.npy' # change to your path, obviously
 
 input_array = np.load(data_file)
 output_array = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
