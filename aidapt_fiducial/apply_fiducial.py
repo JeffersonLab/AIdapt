@@ -5,18 +5,26 @@ from event import Event
 from fiducialCuts import FiducialCuts
 import time
 import matplotlib.pyplot as plt
+from dataManager import DataManager
 
 # Read in data here 
 
-data_file = '/media/tylerviducic/Elements/aidapt/synthetic/clasfilter2_5M780.npy' # change to your path, obviously
+start = time.time()
 
-input_array = np.load(data_file)
-output_array = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+data_file = '/media/tylerviducic/Elements/aidapt/data/synthetic/clasfilter2_5M780.npy' # change to your path, obviously
+# data_file = '/media/tylerviducic/Elements/aidapt/data/recon/twopi_ppip.10.zzz'
+
+data_manager = DataManager(data_file)
+
+input_array = data_manager.get_numpy_array()
+
+# output_array = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 delete_row_list = []
+
+output_list = []
 
 num_rows, num_columns = input_array.shape
 
-start = time.time()
 for n in range(num_rows):
 
     row = input_array[n]
@@ -25,13 +33,16 @@ for n in range(num_rows):
     fd = FiducialCuts(event)
 
     if fd.check_event_pass():
-        output_array = np.append(output_array, [row], axis=0)
+        output_list.append(row.tolist())
+        # output_array = np.append(output_array, [row], axis=0)
 
 
-output_array = np.delete(output_array, 0, axis=0)
+# output_array = np.delete(output_array, 0, axis=0)
+
+output_array = np.array(output_list)
 
 end = time.time()
 
-print('Size of output array: ' + str(num_rows))
-print('time/event = ' + str((end - start)/2506780) + " seconds")
+print('Size of output array: ' + str(output_array.shape[0]))
+print('time/event = ' + str((end - start)/len(input_array)) + " seconds")
 
