@@ -46,7 +46,6 @@ class DataManager:
                     pass
             
             if len(new_row) == 14:
-            
                 output_list.append(new_row)
                 new_row = []
 

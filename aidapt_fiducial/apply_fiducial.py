@@ -11,8 +11,8 @@ from dataManager import DataManager
 
 start = time.time()
 
-data_file = '/media/tylerviducic/Elements/aidapt/data/synthetic/clasfilter2_5M780.npy' # change to your path, obviously
-# data_file = '/media/tylerviducic/Elements/aidapt/data/recon/twopi_ppip.10.zzz'
+# data_file = '/media/tylerviducic/Elements/aidapt/data/synthetic/clasfilter2_5M780.npy' # change to your path, obviously
+data_file = '/media/tylerviducic/Elements/aidapt/data/recon/twopi_ppip.10.zzz'
 
 data_manager = DataManager(data_file)
 
