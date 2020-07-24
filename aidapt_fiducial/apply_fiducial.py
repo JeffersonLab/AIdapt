@@ -18,9 +18,6 @@ data_manager = DataManager(data_file)
 
 input_array = data_manager.get_numpy_array()
 
-# output_array = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-delete_row_list = []
-
 output_list = []
 
 num_rows, num_columns = input_array.shape
@@ -34,10 +31,6 @@ for n in range(num_rows):
 
     if fd.check_event_pass():
         output_list.append(row.tolist())
-        # output_array = np.append(output_array, [row], axis=0)
-
-
-# output_array = np.delete(output_array, 0, axis=0)
 
 output_array = np.array(output_list)
 
