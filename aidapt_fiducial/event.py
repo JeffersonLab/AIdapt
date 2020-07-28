@@ -10,7 +10,7 @@ class Event:
         self.pi_minus = (event_array[4], event_array[7], event_array[10], event_array[13])        
 
     def get_proton_phi(self):
-        return self._get_theta(self.proton)
+        return self._get_phi(self.proton)
 
     def get_pi_plus_phi(self):
         return self._get_phi(self.pi_plus)
