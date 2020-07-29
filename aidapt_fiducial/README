@@ -1,1 +1,55 @@
 module for applying fiducial cuts to g11 synthetic data for the A(I)DAPT project
+
+Module consists of 3 classes and 1 executable, written in Python by Tyler. 
+
+scripts:
+apply_fiducial.py
+dataManager.py
+event.py
+fiducialCuts.py
+
+*************************************************
+fiducialCuts.py script contains:
+defines class FiducialCuts where fiducial cuts for g11 are defined
+defines method to check if event passes all fiducial cuts
+
+private methods for applying cuts
+
+Fiducial cuts for g11:
+1) cut out low momentum protons: Pp > 375 MeV
+2) cut out very forward tracks: cosTheta > 0.985
+3) cut out space between sectors: |phi| < 26 deg
+
+if these need to be changed, do so in fidicualCuts.py lines 9-13
+
+*************************************************
+
+event.py 
+gets information from synthetic data file 
+defines theta, phi, and momenta for each particle
+the particles are identified by their place in .numpy array with order as follows
+
+**************************************************
+
+**************************************************
+apply_fiducial.py
+
+reads in data file 
+for each event (i.e. row), checks whether event passes fiducial cuts
+    if it does pass, event is added to output_array
+    if it does not, it is removed from this new array (but not from the original data file!)
+**************************************************
+
+**************************************************
+dataManager.py
+
+converts .txt or .zzz input file into numpy array 
+**************************************************
+
+
+asdf
+
+
+
+
+
