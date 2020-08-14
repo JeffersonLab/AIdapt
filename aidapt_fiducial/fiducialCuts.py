@@ -11,14 +11,16 @@ class FiducialCuts:
         self.phi_cut = 26.0 # in Degrees
         self.costheta_cut = 0.985
         self.momentum_cut = 0.375 # in GeV
+        self.phi_cuts = [ (0, 26), (34, 86), (94, 146), (154, 176) ]
+        
 
     def check_event_pass(self):
         return self._check_if_event_pass_momentum() and self._check_if_event_pass_phi() and self._check_if_event_pass_theta()
 
     # Private methods
 
-    def _passes_phi(self, phi):
-        return math.degrees(phi) < abs(self.phi_cut)
+    def _passes_phi(self, phi, sector):
+        return abs(math.degrees(abs(phi) - (sector * 60))) < self.phi_cut
 
     def _passes_theta(self, theta):
         return math.cos(theta) < self.costheta_cut

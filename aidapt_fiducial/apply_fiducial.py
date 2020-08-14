@@ -6,8 +6,10 @@ from fiducialCuts import FiducialCuts
 import time
 import matplotlib.pyplot as plt
 from dataManager import DataManager
+import math
 
 # Read in data here 
+
 
 start = time.time()
 
@@ -19,6 +21,8 @@ data_manager = DataManager(data_file)
 input_array = data_manager.get_numpy_array()
 
 output_list = []
+phi_list = []
+num_bins = 180
 
 num_rows, num_columns = input_array.shape
 
@@ -26,6 +30,8 @@ for n in range(num_rows):
 
     row = input_array[n]
     event = Event(row)
+    phi = math.degrees(abs(event.get_proton_phi()))
+    phi_list.append(phi)
 
     fd = FiducialCuts(event)
 
@@ -38,4 +44,8 @@ end = time.time()
 
 print('Size of output array: ' + str(output_array.shape[0]))
 print('time/event = ' + str((end - start)/len(input_array)) + " seconds")
+
+plt.hist(np.array(phi_list), num_bins)
+plt.title("Phi distribution")
+plt.show()
 
