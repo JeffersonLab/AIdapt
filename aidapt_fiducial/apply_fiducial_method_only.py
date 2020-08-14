@@ -14,7 +14,6 @@ def apply_fiducial_cuts(px, py, pz, proton=False):
         return False
     
     if math.cos(theta) > costheta_cut:
-        print("Failed theta - {}".format(math.cos(theta)))
         return False
     
     for cut in phi_cuts:
