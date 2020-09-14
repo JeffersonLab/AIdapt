@@ -1,0 +1,68 @@
+General instructions to run simulations on g11 data interactively:
+
+****************
+
+location of input files and wrapper scripts: /volatile/clas/clasg11/roark/aidaptContainerTesting
+
+input files:
+	⁃	gsiman.input: FFREAD card for GSIM
+	⁃	new_recsis.tcl: input for USER_ANA
+
+wrapper scripts:
+	⁃	do_gpp.sh
+	⁃	do_user_ana.sh
+
+********************
+
+module load singularity
+/work/clas/clase1/tylern/clas6.img
+
+the above commands can be added to .cshrc script so you don’t have to type them every time
+
+the first step (if the files from your event generator are BOS files) is to run GSIM inside the docker container:
+
+gsim_bat -ffread /path/to/gsiman.input -kine 1 -mcin <input bos file> -bosout
+
+As written, this will produce a file labeled gsimout.A00 with a maximum file size of 2GB.
+	⁃	If the file is larger than 2GB, then subsequent files will be named gsimout.A01, gsimout.A02, etc. 
+	⁃	The gsiman.input file is an ffread card. 
+
+After GSIM, the program GPP is used. GPP takes input bos files from GSIM as fileNameYouSpecify.evt. 
+
+/bin/mv gsimout.A00 <fileNameYouSpecify.evt>
+
+The script to run GPP is do_gpp.sh
+	⁃	This script is essentially a wrapper that ensures GPP sees the correct g11 run index. 
+
+./do_gpp.sh
+
+Inside the wrapper, the main gpp command is:
+
+gpp -P0x1f -o<output file> -R43582 -a1.0 -b1.0 -c1.0 -f1.0 -Y fileNameYouSpecify.evt
+
+	⁃	P0x1f removes dead wires
+	⁃	 43582 is the run number for the wire map, 
+	⁃	coefficients a, b, c, and f, represent smearing parameters for DOCA regions 1-3 and time smearing, respectively.  The values of 1.0      correspond to minimal smearing. 
+	⁃	The -Y flag drops DC hits according to the efficiency in the GPP map and the DC wire map in the database.
+
+ USER_ANA is used to cook the MC data in the same way as real data. To run USER_ANA:
+
+./do_user_ana.sh
+
+like GPP, this script is essentially a wrapper that ensures user_ana sees the correct run index. **The input file for USER_ANA must be named clas.evt, unless you adjust this in the new_recsis.tcl file**. 
+
+The main command inside do_user_ana.sh is: 
+
+user_ana -t new_recsis.tcl 
+
+	⁃	The new_recsis.tcl file specifies output banks (among many other things) and will produce an output bos file named clas.out with a maximum file size of 2 GB. 
+  - If the file is larger, they will be subsequently labeled clas.out.A00, clas.out.A01, etc. 
+  - An additional .hbook file, called ntuple.hbook, a log file, and anamonhist will be produced. 
+
+If you would like to check the contents of any bos file, inside the docker container run
+
+bosdump —help
+
+and this will display options like only show a certain number of events, or events from a certain bank, etc. 
+
+
