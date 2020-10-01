@@ -8,6 +8,7 @@ def apply_fiducial_cuts(px, py, pz, pid):
     momentum = math.sqrt(px*px + py*py + pz*pz)
     theta = math.degrees(math.atan2(math.sqrt(px*px + py*py), pz))
     phi = math.degrees(math.atan2(py, px))
+    sector = 0
 
     phi_cuts = [ (0, 26), (34, 86), (94, 146), (154, 176) ]
     momentum_cut_proton = 0.32 # in GeV
@@ -26,10 +27,13 @@ def apply_fiducial_cuts(px, py, pz, pid):
     if abs(phi) > 150:
         sector = 4
     elif phi < 0: 
-        if phi >=90:
+        if phi >=-90:
             sector = 6
-        elif phi >= 150:
+        elif phi >=-150:
             sector = 5
+
+    if sector == 0:
+        print(phi)
 
 # apply cuts
 # cuts can be found in "Analysis of pi+pi- production from the g11 Data Set"
@@ -38,7 +42,8 @@ def apply_fiducial_cuts(px, py, pz, pid):
     if pid == 2212:
         if momentum < 0.45 and theta < 35: 
             return False
-        if momentum < momentum_cut_proton or math.cos(theta) > theta_cut_proton:
+        if momentum < momentum_cut_proton or theta < theta_cut_proton:
+            print
             return False
         if momentum < 0.45 and math.cos(theta) >  0.819:
             return False
@@ -55,7 +60,7 @@ def apply_fiducial_cuts(px, py, pz, pid):
         if sector == 5 and theta > 80:
             return False
         
-        if momentum < momentum_cut_pi or theta > theta_cut_min_pi or theta < theta_cut_max_pi :
+        if momentum < momentum_cut_pi or theta < theta_cut_min_pi or theta > theta_cut_max_pi:
             return False
         for cut in phi_cuts:
             if cut[0] < abs(phi) < cut [1]:
@@ -67,10 +72,10 @@ def apply_fiducial_cuts(px, py, pz, pid):
             return False
         if (sector == 3 or sector == 5) and theta > 90:
             return False
-        if sector = 6 and theta > 110:
+        if sector == 6 and theta > 110:
             return False
 
-        if momentum < momentum_cut_pi or theta > theta_cut_min_pi or theta < theta_cut_max_pi :
+        if momentum < momentum_cut_pi or theta < theta_cut_min_pi or theta > theta_cut_max_pi:
             return False
         for cut in phi_cuts:
             if cut[0] < abs(phi) < cut [1]:
@@ -84,6 +89,7 @@ def apply_fiducial_cuts(px, py, pz, pid):
 
 data_file = '/media/tylerviducic/Elements/aidapt/data/synthetic/clasfilter2_5M780.npy'
 data_array = np.load(data_file)
+n_cut = 0
 
 print("starting loop")
 
@@ -93,5 +99,6 @@ for event in data_array:
     pi_minus = (event[4], event[7], event[10])
 
     if not apply_fiducial_cuts(pi_plus[0], pi_plus[1], pi_plus[2], 211):
-        print("Failed fiducial cut")
-        print('*' * 50)
+        n_cut +=1
+
+print("fraction that failed fiducial cut: {}".format(n_cut/len(data_array) * 100))
