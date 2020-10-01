@@ -32,8 +32,6 @@ def apply_fiducial_cuts(px, py, pz, pid):
         elif phi >=-150:
             sector = 5
 
-    if sector == 0:
-        print(phi)
 
 # apply cuts
 # cuts can be found in "Analysis of pi+pi- production from the g11 Data Set"
