@@ -74,13 +74,11 @@ def apply_fiducial_cuts(px, py, pz, pid):
             return False
 
         if momentum < momentum_cut_pi or theta < theta_cut_min_pi or theta > theta_cut_max_pi:
+            print('momentum: {} - Theta: {}'.format(momentum, theta))
             return False
         for cut in phi_cuts:
             if cut[0] < abs(phi) < cut [1]:
                 return True
-        return False
-    
-    else:
         return False
 
 
@@ -96,7 +94,14 @@ for event in data_array:
     pi_plus = (event[3], event[6], event[9])
     pi_minus = (event[4], event[7], event[10])
 
-    if not apply_fiducial_cuts(pi_plus[0], pi_plus[1], pi_plus[2], 211):
-        n_cut +=1
+    # if not apply_fiducial_cuts(pi_plus[0], pi_plus[1], pi_plus[2], 211):
+    #     n_cut += 1
+    #     continue
+    if not apply_fiducial_cuts(pi_minus[0], pi_minus[1], pi_minus[2], -211):
+        n_cut += 1
+        
+    # if not apply_fiducial_cuts(proton[0], proton[1], proton[2], 2212):
+    #     n_cut += 1 
+
 
 print("fraction that failed fiducial cut: {}".format(n_cut/len(data_array) * 100))
