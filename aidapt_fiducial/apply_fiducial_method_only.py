@@ -74,7 +74,6 @@ def apply_fiducial_cuts(px, py, pz, pid):
             return False
 
         if momentum < momentum_cut_pi or theta < theta_cut_min_pi or theta > theta_cut_max_pi:
-            print('momentum: {} - Theta: {}'.format(momentum, theta))
             return False
         for cut in phi_cuts:
             if cut[0] < abs(phi) < cut [1]:
